@@ -2,22 +2,21 @@
 #export GenerateNetwork
 
 """
-    initializeRoad(numberLanesRoad::Integer, startingDensity::Float64, averageCarLengthDriver::Float64)
+    GenerateNetwork(lambda::Float64, N::Integer, UseTrueRandom::Bool)
 
-Initializes a road with a random distribution of cars with a selected total density.
+Generates a random network with average degree lambda and nodes N.
 
 # Arguments
-* `numberLanesRoad` = the number of lanes in our road.
-* `startingDensity` = the density of cars we want on our road.
-* `averageCarLengthDriver` = the average langth of a car.
-* `resolution` = Splits up the available space into smaller chunks
+* `lambda` = the average degree of all nodes.
+* `N` = Number of nodes in the network.
+* `UseTrueRandom` = if true generates the vertices randomly and the degrees wouldn't be exactly equal to lambda. If false it will decide how 
+    many vertices should be placed, then randomly distributes them.
 
 # Notes
-* The function is randomized and does not fill the road with the exact density that is specified
 
 """
 
-function GenerateNetwork(lambda::Float64, N::Integer, UseTrueRandom::Bool)
+function GenerateNetwork(lambda::Number, N::Integer, UseTrueRandom::Bool)
     Network = []
     for i in 1:N
         push!(Network, [])
@@ -34,10 +33,18 @@ function GenerateNetwork(lambda::Float64, N::Integer, UseTrueRandom::Bool)
         end
     end
     if UseTrueRandom == false
-        
-
+        VerticesNumber = floor(Int, lambda * N)
+        for i in 1:VerticesNumber
+            RandNodeOne = rand(1:N)
+            RandNodeTwo = rand(1:N)
+            push!(Network[RandNodeOne], RandNodeTwo)
+            push!(Network[RandNodeTwo], RandNodeOne)
+        end
     end
     return Network
 end
 
-g = GenerateNetwork(1.5, 10, true)
+g = GenerateNetwork(1.5, 10, false)
+for i in 1:10
+    
+end
