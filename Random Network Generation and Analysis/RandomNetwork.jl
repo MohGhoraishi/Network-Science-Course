@@ -1,5 +1,5 @@
-#module RandomNetwork
-#export GenerateNetwork
+module RandomNetwork
+export GenerateNetwork
 
 """
     GenerateNetwork(lambda::Float64, N::Integer, UseTrueRandom::Bool)
@@ -9,19 +9,18 @@ Generates a random network with average degree lambda and nodes N.
 # Arguments
 * `lambda` = the average degree of all nodes.
 * `N` = Number of nodes in the network.
-* `UseTrueRandom` = if true generates the vertices randomly and the degrees wouldn't be exactly equal to lambda. If false it will decide how 
-    many vertices should be placed, then randomly distributes them.
-
+* `AlgorithmType` = if type 1 is selected, vertices will be generated with a probability and multiple vertices between the same nodes wouldn't exist
+                    if type 2 is selected, then an exact number of vertices will be generated and then they would be randomly distributed.
 # Notes
 
 """
 
-function GenerateNetwork(lambda::Number, N::Integer, UseTrueRandom::Bool)
+function GenerateNetwork(lambda::Number, N::Integer, AlgorithmType::Int)
     Network = []
     for i in 1:N
         push!(Network, [])
     end
-    if UseTrueRandom == true
+    if AlgorithmType == 1
         Probability = lambda / (N - 1)
         for i in 1:N-1
             for j in i+1:N
@@ -31,20 +30,16 @@ function GenerateNetwork(lambda::Number, N::Integer, UseTrueRandom::Bool)
                 end
             end
         end
-    end
-    if UseTrueRandom == false
-        VerticesNumber = floor(Int, lambda * N)
+    elseif  AlgorithmType == 2
+        VerticesNumber = floor(Int, lambda * N / 2)
         for i in 1:VerticesNumber
             RandNodeOne = rand(1:N)
             RandNodeTwo = rand(1:N)
             push!(Network[RandNodeOne], RandNodeTwo)
             push!(Network[RandNodeTwo], RandNodeOne)
         end
+    else
+        return error("AlgorithmType must have values in [1, 2]")
     end
     return Network
-end
-
-g = GenerateNetwork(1.5, 10, false)
-for i in 1:10
-    
 end
