@@ -2,7 +2,7 @@ module RandomNetwork
 export GenerateNetwork
 
 """
-    GenerateNetwork(lambda::Float64, N::Integer, UseTrueRandom::Bool)
+    GenerateNetwork(lambda::Float64, N::Integer, AlgorithmType::Int)
 
 Generates a random network with average degree lambda and nodes N.
 
@@ -42,4 +42,6 @@ function GenerateNetwork(lambda::Number, N::Integer, AlgorithmType::Int)
         return error("AlgorithmType must have values in [1, 2]")
     end
     return Network
+end
+
 end
