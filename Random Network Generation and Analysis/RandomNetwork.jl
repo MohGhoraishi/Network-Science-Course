@@ -16,7 +16,7 @@ Generates a random network with average degree lambda and nodes N.
 """
 
 function GenerateNetwork(lambda::Number, N::Integer, AlgorithmType::Int)
-    Network = []
+    Network::Vector{Vector{Int64}} = []
     for i in 1:N
         push!(Network, [])
     end
